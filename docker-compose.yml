@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: security
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: app:latest
+    ports:
+      - "8889:8888"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db-delivery-d
+      - SPRING_DATASOURCE_USERNAME=user-db
+      - SPRING_DATASOURCE_PASSWORD=cfkdghruhgurgh
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "db-delivery-d"
+      POSTGRES_USER: "user-db"
+      POSTGRES_PASSWORD: "cfkdghruhgurgh"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ../2. Init Database:/docker-entrypoint-initdb.d
+      - rdb-data-security:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  rdb-data-security:

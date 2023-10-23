@@ -1,1 +1,35 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /security
 
+jwt:
+  secret: 984hg493gh0439rthr0429uruj2309yh937gc763fe87t3f89723gf
+  lifetime: 30m
+
+spring:
+  jpa:
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    generate-ddl: false
+    properties:
+      hibernate:
+        show_sql=true:
+    hibernate:
+      ddl-auto: none
+
+  datasource:
+    username: user-db
+    password: cfkdghruhgurgh
+    url: jdbc:postgresql://localhost:5432/db-delivery-d
+    driverClassName: org.postgresql.Driver
+
+
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+
+  main:
+    allow-circular-references: true

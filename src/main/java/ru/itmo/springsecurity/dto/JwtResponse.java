@@ -1,2 +1,4 @@
-package ru.itmo.springsecurity.dto;public record JwtResponse() {
+package ru.itmo.springsecurity.dto;
+
+public record JwtResponse(String token) {
 }
