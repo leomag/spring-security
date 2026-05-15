@@ -33,7 +33,7 @@ jobs:
           cache: 'gradle'
 
       - name: Run Gradle Checkstyle
-        run: gradle checkstyle:checkstyle
+        run: gradle checkstyleMain
 
       - name: Publish Checkstyle Report
         uses: lcollins/checkstyle-github-action@v3.2.0
