@@ -11,6 +11,10 @@ on:
       - feature/*
     types: [opened, synchronize, reopened, closed] 
 
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
 
 
 jobs:
