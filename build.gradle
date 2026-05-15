@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.6'
     id 'io.spring.dependency-management' version '1.1.7'
-    // id 'pmd'
     id 'checkstyle'
 }
 
@@ -12,8 +11,6 @@ version = '0.0.1-SNAPSHOT'
 java {
     sourceCompatibility = '25'
 }
-
-
 
 configurations {
     compileOnly {
@@ -25,35 +22,30 @@ repositories {
     mavenCentral()
 }
 
-// pmd {
-//     consoleOutput = true
-//     ignoreFailures = false
-//     toolVersion = "7.6.0" // Specify the PMD version you want to use
-//     // rulesMinimumPriority = 5
-//     //
-//     ruleSetFiles = files("config/pmd/custom-ruleset.xml")
-//     ruleSets = []                         
-//     incrementalAnalysis = true
-// }
-
 checkstyle {
-    toolVersion = "10.17.0"                // актуальная версия
-    configFile = file("config/checkstyle/checkstyle.xml")   // файл с правилами
-    ignoreFailures = false                 // билд упадёт при нарушениях
-    showViolations = true                  // показывать нарушения в консоли
+    toolVersion = "10.17.0"                
+    configFile = file("config/checkstyle/checkstyle.xml")   
+    ignoreFailures = false                 
+    showViolations = true                  
 }
 
 dependencies {
-    // implementation platform('org.springframework.boot:spring-boot-dependencies:3.2.0')
-    // implementation platform('org.springframework.boot:')
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
     implementation 'org.flywaydb:flyway-core'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    compileOnly 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.9'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+    useJUnitPlatform()
 }
