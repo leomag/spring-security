@@ -67,8 +67,18 @@ jobs:
       - name: Run Gradle Test
         run: gradle test
 
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
+      - name: Upload HTML Test Report
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          files: '**/build/test-results/test/*.xml'
+          name: test-reports-html
+          path: |
+            build/reports/tests/test/
+
+      - name: Publish JUnit Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Gradle Tests
+          path: build/test-results/test/*.xml
+          reporter: java-junit
