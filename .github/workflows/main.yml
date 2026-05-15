@@ -1,0 +1,41 @@
+name: CI-Pipeline
+
+
+on: 
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches: 
+      - main
+      - feature/*
+    types: [opened, synchronize, reopened, closed] 
+
+
+
+jobs:
+  lint:
+    name: Run Checkstyle
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        java-version: ["17", "21", "25"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Run Gradle Checkstyle
+        run: gradle checkstyle:checkstyle
+
+      - name: Publish Checkstyle Report
+        uses: lcollins/checkstyle-github-action@v3
+        with:
+          path: '**/checkstyle-result.xml'
