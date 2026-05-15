@@ -37,15 +37,17 @@ jobs:
           cache: 'gradle'
 
       - name: Run Gradle Checkstyle
-        run: gradle checkstyleMain
+        run: gradle checkstyleMain checkstyleTest
 
       - name: Publish Checkstyle Report
         uses: lcollins/checkstyle-github-action@v3.2.0
         with:
-          path: '**/main.xml'   
+          path: '**/*.xml'
+        if: always()
+
   test:
     needs: [lint]
-    name: Run Checkstyle
+    name: Run Tests
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -69,3 +71,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: '***/index.html'             
+        if: always()  
