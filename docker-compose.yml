@@ -15,18 +15,39 @@ services:
       - SPRING_DATASOURCE_PASSWORD=cfkdghruhgurgh
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
 
-  postgres:
-    image: postgres:latest
+  db:
+    image: postgres:18
+    restart: always
+    container_name: postgres_db_container
     environment:
-      POSTGRES_DB: "db-delivery-d"
-      POSTGRES_USER: "user-db"
-      POSTGRES_PASSWORD: "cfkdghruhgurgh"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: "/var/lib/postgresql/data/pgdata"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     volumes:
-      - ../2. Init Database:/docker-entrypoint-initdb.d
-      - rdb-data-security:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d.ro
+      - data-security:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - ${POSTGRES_PORT}:5432
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PG_ADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PG_ADMIN_PASSWORD}
+    ports:
+      - ${PG_PORT}:80
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
-  rdb-data-security:
+  data-security:

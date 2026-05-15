@@ -1,12 +1,18 @@
-FROM openjdk:17-jdk-slim-buster AS builder
-
-RUN apt-get update -y
-RUN apt-get install -y binutils
-
+FROM gradle:9.5.1-jdk25-alpine AS build
 WORKDIR /app
 
-COPY . .
+COPY build.gradle settings.gradle ./
+COPY gradle ./gradle
+COPY gradlew ./
+RUN ./gradlew build -x test --no-daemon || return 0
 
-RUN ./gradlew build -i --stacktrace
+COPY src ./src
+RUN ./gradlew clean bootJar --no-daemon
 
-ENTRYPOINT ["java", "-jar", "/app/build/libs/spring-security-0.0.1-SNAPSHOT.jar"]
+FROM eclipse-temurin:25-jre-alpine
+WORKDIR /app
+
+COPY --from=build /app/build/libs/*.jar app.jar
+
+EXPOSE 8888
+ENTRYPOINT ["java", "-jar", "app.jar"]

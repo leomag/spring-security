@@ -3,10 +3,7 @@ package ru.itmo.springsecurity.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itmo.springsecurity.entity.Role;
-import ru.itmo.springsecurity.entity.User;
 import ru.itmo.springsecurity.repository.RoleRepository;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

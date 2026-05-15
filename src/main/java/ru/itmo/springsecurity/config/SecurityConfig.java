@@ -1,6 +1,5 @@
 package ru.itmo.springsecurity.config;
 
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,7 +21,7 @@ import ru.itmo.springsecurity.service.UserService;
 
 @Component
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+// @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
     private UserService userService;
     private JwtRequestFilter jwtRequestFilter;
@@ -45,9 +43,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/secured").authenticated()
-                                .requestMatchers("/info").authenticated()
-                                .requestMatchers("/admin").hasRole("ADMIN")
+                        auth -> auth.requestMatchers("/api/v1/secured").authenticated()
+                                .requestMatchers("/api/v1/info").authenticated()
+                                .requestMatchers("/api/v1/admin").hasRole("ADMIN")
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement(
@@ -65,9 +63,9 @@ public class SecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
-        var daoAuthenticationProvider = new DaoAuthenticationProvider();
+        var daoAuthenticationProvider = new DaoAuthenticationProvider(userService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userService);
+        // daoAuthenticationProvider.setUserDetailsService(userService);
         return daoAuthenticationProvider;
     }
 

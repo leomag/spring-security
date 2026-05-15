@@ -2,18 +2,18 @@ package ru.itmo.springsecurity.exception;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class AppError {
 
     private int status;
     private String message;
-    private Date timestamp;
+    private LocalDate timestamp;
 
     public AppError(int status, String message) {
         this.status = status;
         this.message = message;
-        this.timestamp = new Date();
+        this.timestamp = LocalDate.now();
     }
 }
