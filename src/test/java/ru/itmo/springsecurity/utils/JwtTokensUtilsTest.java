@@ -27,7 +27,7 @@ class JwtTokensUtilsTest {
     }
 
     @Test
-    void generateToken_andGetUsername_roundTrip() {
+    void generateTokenAndGetUsernameRoundTrip() {
         var userDetails = new User(
                 "alice",
                 "password",
@@ -40,7 +40,7 @@ class JwtTokensUtilsTest {
     }
 
     @Test
-    void getRoles_returnsRolesFromToken() {
+    void getRolesReturnsRolesFromToken() {
         var userDetails = new User(
                 "alice",
                 "password",
@@ -53,7 +53,7 @@ class JwtTokensUtilsTest {
     }
 
     @Test
-    void getRoles_returnsEmptyListWhenClaimMissing() {
+    void getRolesReturnsEmptyListWhenClaimMissing() {
         var userDetails = new User("bob", "password", List.of());
 
         var token = jwtTokensUtils.generateToken(userDetails);
@@ -62,7 +62,7 @@ class JwtTokensUtilsTest {
     }
 
     @Test
-    void getUsername_throwsOnInvalidToken() {
+    void getUsernameThrowsOnInvalidToken() {
         assertThatThrownBy(() -> jwtTokensUtils.getUsername("not-a-jwt"))
                 .isInstanceOf(JwtException.class);
     }

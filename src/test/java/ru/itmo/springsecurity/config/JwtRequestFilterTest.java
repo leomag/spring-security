@@ -39,7 +39,7 @@ class JwtRequestFilterTest {
     }
 
     @Test
-    void doFilterInternal_setsAuthenticationWhenBearerTokenValid() throws Exception {
+    void doFilterInternalSetsAuthenticationWhenBearerTokenValid() throws Exception {
         var request = new MockHttpServletRequest();
         request.addHeader("Authorization", "Bearer valid-token");
         var response = new MockHttpServletResponse();
@@ -56,7 +56,7 @@ class JwtRequestFilterTest {
     }
 
     @Test
-    void doFilterInternal_doesNotSetAuthenticationWithoutBearerHeader() throws Exception {
+    void doFilterInternalDoesNotSetAuthenticationWithoutBearerHeader() throws Exception {
         var request = new MockHttpServletRequest();
         var response = new MockHttpServletResponse();
 
@@ -67,7 +67,7 @@ class JwtRequestFilterTest {
     }
 
     @Test
-    void doFilterInternal_doesNotSetAuthenticationWhenTokenSignatureInvalid() throws Exception {
+    void doFilterInternalDoesNotSetAuthenticationWhenTokenSignatureInvalid() throws Exception {
         var request = new MockHttpServletRequest();
         request.addHeader("Authorization", "Bearer invalid-token");
         var response = new MockHttpServletResponse();

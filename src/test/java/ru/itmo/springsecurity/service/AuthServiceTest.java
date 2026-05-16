@@ -41,7 +41,7 @@ class AuthServiceTest {
     private AuthService authService;
 
     @Test
-    void createAuthToken_returnsJwtWhenCredentialsValid() {
+    void createAuthTokenReturnsJwtWhenCredentialsValid() {
         var request = new JwtRequest("alice", "secret");
         var userDetails = new User("alice", "hash", List.of());
         when(userService.loadUserByUsername("alice")).thenReturn(userDetails);
@@ -56,7 +56,7 @@ class AuthServiceTest {
     }
 
     @Test
-    void createAuthToken_returnsUnauthorizedWhenCredentialsInvalid() {
+    void createAuthTokenReturnsUnauthorizedWhenCredentialsInvalid() {
         var request = new JwtRequest("alice", "wrong");
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenThrow(new BadCredentialsException("bad credentials"));
@@ -71,7 +71,7 @@ class AuthServiceTest {
     }
 
     @Test
-    void createNewUser_returnsBadRequestWhenPasswordsDoNotMatch() {
+    void createNewUserReturnsBadRequestWhenPasswordsDoNotMatch() {
         var dto = new RegistrationUserDto("alice", "pass1", "pass2", "alice@example.com");
 
         var response = authService.createNewUser(dto);
@@ -82,7 +82,7 @@ class AuthServiceTest {
     }
 
     @Test
-    void createNewUser_returnsBadRequestWhenUsernameExists() {
+    void createNewUserReturnsBadRequestWhenUsernameExists() {
         var dto = new RegistrationUserDto("alice", "pass", "pass", "alice@example.com");
         when(userService.findByUsername("alice")).thenReturn(Optional.of(new ru.itmo.springsecurity.entity.User()));
 
@@ -94,7 +94,7 @@ class AuthServiceTest {
     }
 
     @Test
-    void createNewUser_returnsUserDtoWhenRegistrationSuccessful() {
+    void createNewUserReturnsUserDtoWhenRegistrationSuccessful() {
         var dto = new RegistrationUserDto("alice", "pass", "pass", "alice@example.com");
         when(userService.findByUsername("alice")).thenReturn(Optional.empty());
         var savedUser = new ru.itmo.springsecurity.entity.User();

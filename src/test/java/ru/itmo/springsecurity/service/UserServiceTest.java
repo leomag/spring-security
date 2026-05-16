@@ -44,7 +44,7 @@ class UserServiceTest {
     }
 
     @Test
-    void findByUsername_delegatesToRepository() {
+    void findByUsernameDelegatesToRepository() {
         var user = new User();
         user.setUsername("alice");
         when(userRepository.findByUsername("alice")).thenReturn(Optional.of(user));
@@ -55,7 +55,7 @@ class UserServiceTest {
     }
 
     @Test
-    void loadUserByUsername_returnsUserDetailsWithRoles() {
+    void loadUserByUsernameReturnsUserDetailsWithRoles() {
         var role = new Role();
         role.setName("ROLE_USER");
         var user = new User();
@@ -72,7 +72,7 @@ class UserServiceTest {
     }
 
     @Test
-    void loadUserByUsername_throwsWhenUserNotFound() {
+    void loadUserByUsernameThrowsWhenUserNotFound() {
         when(userRepository.findByUsername("missing")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.loadUserByUsername("missing"))
@@ -81,7 +81,7 @@ class UserServiceTest {
     }
 
     @Test
-    void getNewUser_encodesPasswordAndAssignsRole() {
+    void getNewUserEncodesPasswordAndAssignsRole() {
         var dto = new RegistrationUserDto("alice", "plain", "plain", "alice@example.com");
         var role = new Role();
         role.setName("ROLE_USER");

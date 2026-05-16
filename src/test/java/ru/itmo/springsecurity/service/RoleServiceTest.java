@@ -25,7 +25,7 @@ class RoleServiceTest {
     private RoleService roleService;
 
     @Test
-    void getUserRole_returnsRoleUser() {
+    void getUserRoleReturnsRoleUser() {
         var role = new Role();
         role.setId(1);
         role.setName("ROLE_USER");
@@ -37,7 +37,7 @@ class RoleServiceTest {
     }
 
     @Test
-    void getUserRole_throwsWhenRoleMissing() {
+    void getUserRoleThrowsWhenRoleMissing() {
         when(roleRepository.findByName("ROLE_USER")).thenReturn(Optional.empty());
 
         assertThatThrownBy(roleService::getUserRole).isInstanceOf(NoSuchElementException.class);
