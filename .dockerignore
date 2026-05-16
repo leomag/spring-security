@@ -1,0 +1,28 @@
+.DS_Store
+.idea
+.vscode
+# Ignore Git history
+.git
+.gitignore
+
+# Ignore local dependencies (install them inside the Dockerfile instead)
+node_modules/
+venv/
+env/
+__pycache__/
+
+# Ignore build artifacts and logs
+dist/
+build/
+*.log
+
+# Ignore environment secrets and local config
+.env
+.aws/
+.ssh/
+
+# Ignore documentation and Docker-specific files
+README.md
+Dockerfile
+docker-compose.yml
+.dockerignore
