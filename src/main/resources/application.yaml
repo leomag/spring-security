@@ -1,8 +1,6 @@
 server:
   port: 8888
-  
-
-  
+    
 jwt:
   secret: ${JWT_SECRET}
   lifetime: ${JWT_LIFETIME}
@@ -13,7 +11,6 @@ spring:
   jpa:
     show-sql: true
     database: postgresql
-    # database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     generate-ddl: false
     properties:
       hibernate:

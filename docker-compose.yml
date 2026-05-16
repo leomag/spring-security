@@ -2,18 +2,26 @@ version: '3.9'
 
 services:
   app:
-    container_name: security
+    container_name: app_security_container
     build:
       context: .
       dockerfile: Dockerfile
     image: app:latest
     ports:
-      - "8889:8888"
+      - ${APP_PORT}:8888
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db-delivery-d
-      - SPRING_DATASOURCE_USERNAME=user-db
-      - SPRING_DATASOURCE_PASSWORD=cfkdghruhgurgh
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:${POSTGRES_PORT}/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+      - SPRING_JPA_GENERATE_DDL=false
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_LIFETIME=${JWT_LIFETIME}
+    depends_on:
+      db:
+        condition: service_healthy  
+      flyway:
+        condition: service_started   
 
   db:
     image: postgres:18
@@ -35,6 +43,21 @@ services:
       - data-security:/var/lib/postgresql/data
     ports:
       - ${POSTGRES_PORT}:5432
+
+  flyway:
+    image: flyway/flyway:12.6.1
+    container_name: flyway_container
+    command: migrate
+    volumes:
+      - ./sql:/flyway/sql
+    environment:
+      FLYWAY_URL: jdbc:postgresql://db:${POSTGRES_PORT}/${POSTGRES_DB}
+      FLYWAY_USER: ${POSTGRES_USER}
+      FLYWAY_PASSWORD: ${POSTGRES_PASSWORD}
+      FLYWAY_LOCATIONS: filesystem:./sql
+    depends_on:
+      db:
+        condition: service_healthy  
 
   pgadmin:
     image: dpage/pgadmin4
