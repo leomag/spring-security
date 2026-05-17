@@ -47,7 +47,7 @@ jobs:
 
   lint:
     name: Run Checkstyle
-    needs: changes # Ждем завершения проверки
+    needs: changes 
     if: needs.changes.outputs.src == 'true'
     runs-on: ${{ matrix.os }}
     strategy:
