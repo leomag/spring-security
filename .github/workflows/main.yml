@@ -22,16 +22,56 @@ permissions:
 
 
 jobs:
+  
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      src: |
+        ${{ steps.filter.outputs.src }} # Прокидываем результат вовне
+        ${{ steps.filter.outputs.sql }}
+        ${{ steps.filter.outputs.config }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+              - 'sql/**'    
+              - 'config/checkstyle/**'    
+              - 'database/**'    
+              - 'Dockerfile'
+              - 'docker-compose.yml'
+              - '*.gradle'
+              - 'gradlew'
+              - 'gradlew.*'
+
   lint:
     name: Run Checkstyle
+    needs: changes # Ждем завершения проверки
+    if: needs.changes.outputs.src == 'true'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         java-version: ["25"]
     steps:
+        
       - name: Checkout code
         uses: actions/checkout@v6
+        # id: filter
+        # with:
+        #   filters: |
+        #     src:
+        #       - 'src/**'
+        #     config:
+        #       - 'config/checkstyle/**'  
+        #     sql:
+        #       - 'sql/**'  
+        #     database:
+        #       - 'database/**'  
 
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v4
@@ -89,9 +129,10 @@ jobs:
   
   build:
     needs: [lint, test]
-    runs-on: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest]
         java-version: ["25"]
 
     permissions:
