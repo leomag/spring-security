@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   app:
     image: ghcr.io/leomag/spring-security.8e90a983b0fe870a3cc3d2e0a747ef74d749082b:sha256-48d9ded5f66601055cd582a32e380b98b6c688b3e4574682f1f7ec3acee8788f
