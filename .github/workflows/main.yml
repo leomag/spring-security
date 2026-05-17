@@ -27,10 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       src: |
-        ${{ steps.filter.outputs.src }} # Прокидываем результат вовне
-        ${{ steps.filter.outputs.sql }}
-        ${{ steps.filter.outputs.config }}
-
+        ${{ steps.filter.outputs.src }} 
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
