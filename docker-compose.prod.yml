@@ -1,7 +1,9 @@
+version: '3.9'
 services:
   app:
-    image: ghcr.io/leomag/spring-security.8e90a983b0fe870a3cc3d2e0a747ef74d749082b:sha256-48d9ded5f66601055cd582a32e380b98b6c688b3e4574682f1f7ec3acee8788f
-    platform: linux/amd64
+
+    image: ghcr.io/leomag/spring-security.fadb40ef73c6340da5727289c86f2a96f675c5fc@sha256:065d807029b4ff41bc110bdc76a1dae6b94705ce33e32a2824b95213009cfd23
+    # platform: linux/arm64
     container_name: app_security_container
     ports:
       - ${APP_PORT}:8888
