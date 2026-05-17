@@ -23,32 +23,32 @@ permissions:
 
 jobs:
   
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      src: |
-        ${{ steps.filter.outputs.src }} 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            src:
-              - 'src/**'
-              - 'sql/**' 
-              - 'config/checkstyle/**' 
-              - 'database/**' 
-              - 'Dockerfile' 
-              - 'docker-compose.*.yml' 
-              - '*.gradle' 
-              - 'gradlew' 
-              - 'gradlew.*'
+  # changes:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     src: |
+  #       ${{ steps.filter.outputs.src }} 
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: dorny/paths-filter@v3
+  #       id: filter
+  #       with:
+  #         filters: |
+  #           src:
+  #             - 'src/**'
+  #             - 'sql/**' 
+  #             - 'config/checkstyle/**' 
+  #             - 'database/**' 
+  #             - 'Dockerfile' 
+  #             - 'docker-compose.*.yml' 
+  #             - '*.gradle' 
+  #             - 'gradlew' 
+  #             - 'gradlew.*'
 
   lint:
     name: Run Checkstyle
-    needs: changes 
-    if: needs.changes.outputs.src == 'true'
+    # needs: changes 
+    # if: needs.changes.outputs.src == 'true'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
