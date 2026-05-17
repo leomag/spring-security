@@ -126,10 +126,9 @@ jobs:
   
   build:
     needs: [lint, test]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
         java-version: ["25"]
 
     permissions:
@@ -140,19 +139,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-        
-      - name: Setup Homebrew for macOS
-        if: runner.os == 'macOS'
-        uses: Homebrew/actions/setup-homebrew@master
-
-      - name: Setup Docker for macOS   
-        if: runner.os == 'macOS'
-        run: |
-          brew install docker colima
-          /opt/homebrew/opt/colima/bin/colima start -f
-      - name: Verify Docker
-        run: |
-          docker info
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
@@ -172,6 +158,7 @@ jobs:
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}   
