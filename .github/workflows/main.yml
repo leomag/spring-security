@@ -141,12 +141,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         
-      - name: Setup Docker on macOS
+      - name: Setup Homebrew for macOS
         if: runner.os == 'macOS'
-        uses: douglascamata/setup-docker-macos-action@v1
+        uses: Homebrew/actions/setup-homebrew@master
 
+      - name: Setup Docker for macOS   
+        if: runner.os == 'macOS'
+        run: |
+          brew install docker colima
+          colima start
+          # for work docker-compose v2
+          mkdir -p ~/.docker/cli-plugins
+          ln -sfn /usr/local/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
       - name: Verify Docker
-        run: docker info
+        run: |
+          docker info
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
