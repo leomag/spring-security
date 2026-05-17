@@ -149,10 +149,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install docker colima
-          colima start
-          # for work docker-compose v2
-          mkdir -p ~/.docker/cli-plugins
-          ln -sfn /usr/local/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
+          /opt/homebrew/opt/colima/bin/colima start -f
       - name: Verify Docker
         run: |
           docker info
