@@ -89,7 +89,7 @@ jobs:
   
   build:
     needs: [lint, test]
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, macos-latest]
     strategy:
       matrix:
         java-version: ["25"]
