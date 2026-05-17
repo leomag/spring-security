@@ -35,7 +35,15 @@ jobs:
         with:
           filters: |
             src:
-              - 'src/**' || 'sql/**' || 'config/checkstyle/**' || 'database/**' || 'Dockerfile' || 'docker-compose.*.yml' || '*.gradle' || 'gradlew' || 'gradlew.*'
+              - 'src/**'
+              - 'sql/**' 
+              - 'config/checkstyle/**' 
+              - 'database/**' 
+              - 'Dockerfile' 
+              - 'docker-compose.*.yml' 
+              - '*.gradle' 
+              - 'gradlew' 
+              - 'gradlew.*'
 
   lint:
     name: Run Checkstyle
