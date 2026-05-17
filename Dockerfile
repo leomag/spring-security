@@ -8,6 +8,8 @@ COPY gradlew ./
 RUN --mount=type=cache,target=/root/.gradle/caches \
     ./gradlew dependencies --no-daemon
 
+COPY src ./src
+
 RUN --mount=type=cache,target=/root/.gradle/caches \
     ./gradlew bootJar --no-daemon
 
