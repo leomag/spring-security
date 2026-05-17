@@ -43,7 +43,7 @@ jobs:
               - 'config/checkstyle/**'    
               - 'database/**'    
               - 'Dockerfile'
-              - 'docker-compose.yml'
+              - 'docker-compose.*.yml'
               - '*.gradle'
               - 'gradlew'
               - 'gradlew.*'
