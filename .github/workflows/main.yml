@@ -141,20 +141,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         
-      - name: Setup Homebrew for macOS
+      - name: Setup Docker on macOS
         if: runner.os == 'macOS'
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: douglascamata/setup-docker-macos-action@v1
 
-      - name: Setup Docker for macOS   
-        if: runner.os == 'macOS'
-        run: |
-          brew update
-          brew install --cask docker
-          sudo /Applications/Docker.app/Contents/Resources/bin/docker-cli-wrapper.symlink
-          # Запуск Docker Daemon
-          open -a Docker
-          # Ожидание запуска Docker
-          while ! docker info > /dev/null 2>&1; do sleep 5; done
+      - name: Verify Docker
+        run: docker info
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
