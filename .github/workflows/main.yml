@@ -141,12 +141,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         
-        if: runner.os == 'macos-latest'
       - name: Setup Homebrew for macOS
+        if: runner.os == 'macOS'
         uses: Homebrew/actions/setup-homebrew@master
 
-        if: runner.os == 'macos-latest'
       - name: Setup Docker for macOS   
+        if: runner.os == 'macOS'
         run: |
           brew update
           brew install --cask docker
