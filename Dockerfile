@@ -4,10 +4,12 @@ WORKDIR /app
 COPY build.gradle settings.gradle ./
 COPY gradle ./gradle
 COPY gradlew ./
-RUN ./gradlew build -x test --no-daemon || return 0
 
-COPY src ./src
-RUN ./gradlew clean bootJar --no-daemon
+RUN --mount=type=cache,target=/root/.gradle/caches \
+    ./gradlew dependencies --no-daemon
+
+RUN --mount=type=cache,target=/root/.gradle/caches \
+    ./gradlew bootJar --no-daemon
 
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app

@@ -170,18 +170,29 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3   
          
-      - name: Build and push Docker image
+      - name: Build and push amd64 Docker image
         id: push
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: .
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}   
-          cache-from: type=gha,scope=${{ github.ref_name }}-${{ matrix.platform }} 
-          cache-to: type=gha,scope=${{ github.ref_name }}-${{ matrix.platform }},mode=max
-
+          labels: ${{ steps.meta.outputs.labels }}:amd64   
+          cache-from: type=gha,scope=amd64
+          cache-to: type=gha,scope=amd64,mode=max
+      
+      - name: Build and push arm64 Docker image
+        uses: docker/build-push-action@vf2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          platforms: linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}:arm64   
+          cache-from: type=gha,scope=arm64
+          cache-to: type=gha,scope=arm64,mode=max    
+          
       - name: Generate artifact attestation
         uses: actions/attest@v4
         with:
